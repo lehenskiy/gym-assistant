@@ -1,0 +1,36 @@
+{% extends '@app.shared_dir/base.html.twig' %}
+
+{% block content %}
+    <div class="grid m-3 overflow-hidden">
+        <div class="w-full p-6 m-auto bg-transparent/10 rounded-md shadow-md border-2 border-info lg:max-w-md">
+            <p class="text-3xl font-semibold text-center text-accent">Please Sign in!</p>
+            <form class="space-y-4 grid" method="post">
+                <div>
+                    {% if error %}
+                        <div class="grid mt-1">
+                            <span class="bg-yellow-100 place-self-center text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">The entered data is incorrect</span>
+                        </div>
+                    {% endif %}
+                    <label for="inputEmail">Email</label>
+                    <div class="indicator w-[97%]">
+                        <span class="indicator-item badge badge-sm font-bold bg-indigo-800">Required</span>
+                        <input type="email" placeholder="gym-assistant@gmail.com" value="{{ last_username }}" name="email" id="inputEmail" class="form-control input-sm border-info rounded-sm border w-full" autocomplete="email" required>
+                    </div>
+                </div>
+                <div>
+                    <label for="inputPassword">Password</label>
+                    <div class="indicator w-[97%]">
+                        <span class="indicator-item badge badge-sm font-bold bg-indigo-800">Required</span>
+                        <input type="password" name="_password" id="inputPassword" class="form-control input-sm border-info rounded-sm border w-full" autocomplete="current-password" required>
+                    </div>
+                </div>
+                <div class="place-self-center">
+                    <button class="btn btn-accent rounded-sm" type="submit">Sign in</button>
+                </div>
+                <span class="place-self-center">Don't have an account ?
+                    <a href="{{ path('signup') }}" class="text-blue-600 hover:text-blue-800 hover:underline">Sign up</a></span>
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+            </form>
+        </div>
+    </div>
+{% endblock %}

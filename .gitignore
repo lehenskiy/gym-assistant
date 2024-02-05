@@ -1,0 +1,25 @@
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###
+
+###> redundant things from bundles ###
+/.idea
+/.platform
+.platform.app.yaml
+###< redundant things from bundles ###
+
+compose.override.yml
+
+/public/img/exercise/
+/public/img/program/

@@ -1,0 +1,262 @@
+{% extends '@app.shared_dir/base.html.twig' %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('js/copyText.js') }}"></script>
+{% endblock %}
+
+{% block right_navbar_elements %}
+    {% if isCurrentUserPage %}
+        <a href="{{ path('edit_profile', {'slug': currentUserSlug}) }}" class="btn btn-success btn-sm">Edit</a>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="bg-grey-100">
+        <div class="container mx-auto my-5 p-5">
+            <div class="md:flex no-wrap md:-mx-2">
+                <!-- Left Side -->
+                <div class="w-full md:w-3/12 md:mx-2">
+                    <!-- Profile Card -->
+                    <div class="bg-blue-100 p-3 border-t-4 border-sm rounded border-indigo-500">
+                        <div class="image overflow-hidden">
+                            <img class="h-auto w-full mx-auto"
+                                 src="https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg"
+                                 alt="">
+                        </div>
+                        <h1 class="text-gray-900 font-bold text-xl leading-8 my-1">{{ profile.publicData.username }}</h1>
+                        <h3 class="text-rose-500 font-lg text-bold leading-6">Training expert<cite class="text-black"> (930 points)</cite></h3>
+                        <p class="text-rose-950 flex items-center py-3">
+                            <span>Member since</span>
+                            <span class="ml-auto">{{ profile.publicData.registrationDate|date('d.m.y H:i') }} ({{ profile.publicData.daysAtSite }} days)</span>
+                        </p>
+                    </div>
+                    <!-- End of profile card -->
+                    <div class="my-4"></div>
+                        <!-- Added exercises -->
+                        <div class="bg-blue-100 p-3 border-t-4 border-sm rounded border-indigo-500">
+                            <div class="image overflow-hidden">
+                                <img class="h-auto w-full mx-auto"
+                                     src="https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg"
+                                     alt="">
+                            </div>
+                            <h1 class="text-gray-900 font-bold text-xl leading-8 my-1">Most popular added exercises</h1>
+                            <h3 class="text-rose-950 flex font-lg text-bold leading-6 items-center py-3">
+                                <span>Title</span>
+                                <span class="ml-auto">Views</span>
+                            </h3>
+                            <div class="collapse text-center mt-5">
+                                <input type="checkbox" class="peer"/>
+                                <div class="collapse-title text-blue-800 border-info border-2 rounded-lg text-primary-content peer-checked:text-secondary-content">
+                                    Show
+                                </div>
+                                <div class="collapse-content font-semibold peer-checked:text-secondary-content">
+                                    <div class="grid grid-cols-2">
+                                        {% for exercise in profile.publicData.mostPopularCreatedExercises %}
+                                            <a class="px-4 py-2 link" href="{{ path('show_exercise', { 'slug': exercise.slug}) }}">{{ exercise.title }}</a>
+                                            <div class="px-4 py-2">{{ exercise.viewsNumber }}</div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End of added exercises -->
+                        <div class="my-4"></div>
+                </div>
+                <!-- Right Side -->
+                <div class="w-full md:w-9/12 mx-2 h-64">
+                    <!-- Profile tab -->
+                    <!-- About Section -->
+                    <div class="bg-blue-100 border-4 border-indigo-500 p-3 shadow-sm rounded-sm">
+                        <div class="flex items-center space-x-2 font-semibold text-gray-900 leading-8">
+                        <span class="text-green-500">
+                            <svg class="h-5" xmlns="http://www.w3.org/2000/svg" stroke="blue" fill="none" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                            </svg>
+                        </span>
+                            <span class="tracking-wide">Info</span>
+                        </div>
+                        <div class="text-gray-700">
+                            {% if profile.privateData is not same as null %}
+                                <!-- Show personal data -->
+                                <div class="grid md:grid-cols-2 text-sm">
+                                    <div class="grid grid-cols-2">
+                                        <div class="px-4 py-2 font-semibold">Gender</div>
+                                        <div class="px-4 py-2">
+                                            {% if profile.privateData.gender is not null %}
+                                                {% if profile.privateData.gender %}
+                                                    Male
+                                                {% else %}
+                                                    Female
+                                                {% endif %}
+                                            {% else %}
+                                                Not set
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-2">
+                                        <div class="px-4 py-2 font-semibold">Email.</div>
+                                        <div class="px-4 py-2">
+                                            <a class="text-blue-800 link" id="email" title="Copy to clipboard" onclick="copyText('email')">{{ profile.privateData.email }}</a>
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-2">
+                                        <div class="px-4 py-2 font-semibold">Birthday(age)</div>
+                                        <div class="px-4 py-2">
+                                            {% if profile.privateData.birthDate is not null %}
+                                                {{ profile.privateData.birthDate|date('d.m.Y') }}({{ profile.privateData.age }})
+                                            {% else %}
+                                                Not set
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-2">
+                                        <div class="px-4 py-2 font-semibold">Height</div>
+                                        <div class="px-4 py-2">{{ profile.privateData.height is same as null ? 'Not set' : profile.privateData.height ~ 'cm' }}</div>
+                                    </div>
+                                    <div class="grid grid-cols-2">
+                                        <div class="px-4 py-2 font-semibold">Current weight</div>
+                                        <div class="px-4 py-2">{{ (profile.privateData.currentWeight is null) ? 'Not set' : (profile.privateData.currentWeight/10)|number_format(1) ~ 'kg' }}</div>
+                                    </div>
+                                    <div class="grid grid-cols-2">
+                                        <div class="px-4 py-2 font-semibold">Goal weight</div>
+                                        <div class="px-4 py-2">{{ profile.privateData.goalWeight is null ? 'Not set' : (profile.privateData.goalWeight/10)|number_format(1) ~ 'kg' }}</div>
+                                    </div>
+                                </div>
+                                <div class="mt-2 flex items-center space-x-2 font-semibold text-gray-900 leading-8">
+                                    <span class="text-green-500">
+                                        <svg class="h-6" xmlns="http://www.w3.org/2000/svg" data-name="Layer 3" viewBox="0 0 32 32">
+                                            <path fill="none" stroke="#6563ff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 9v17h21" class="stroke-0832ff"></path>
+                                            <path fill="#6563ff" d="M6 24h22v2H6z" class="fill-0832ff"></path>
+                                            <path fill="none" stroke="#6563ff" stroke-linecap="round" stroke-linejoin="round" d="M10.5 13.5h2v8h-2zm4-5h2v13h-2zm4 8h2v5h-2zm4-4h2v9h-2z" class="stroke-0832ff"></path>
+                                        </svg>
+                                    </span>
+                                    <span class="tracking-wide">Expanded info</span>
+                                </div>
+                                <div class="grid md:grid-cols-2 text-sm">
+                                    <div class="grid grid-cols-2">
+                                        <div class="px-4 py-2 font-semibold">Body mass index</div>
+                                        <div class="px-4 py-2">{{ profile.privateData.bodyMassIndex is null ? 'Unable to calculate' : (profile.privateData.bodyMassIndex/100)|number_format(2) ~ 'kg' }}</div>
+                                    </div>
+                                    <div class="grid grid-cols-2">
+                                        <div class="px-4 py-2 font-semibold">Body mass index interpretation</div>
+                                        <div class="px-4 py-2">{{ profile.privateData.bodyMassIndexInterpretation ?? 'Unable to calculate' }}</div>
+                                    </div>
+                                    <div class="grid grid-cols-2">
+                                        <div class="px-4 py-2 font-semibold">
+                                            {% if profile.privateData.weightGained is same as null %}
+                                                Weight gained/lost
+                                            {% elseif profile.privateData.weightGained >= 0 %}
+                                                Weight gained
+                                            {% else %}
+                                                Weight lost
+                                            {% endif %}
+                                        </div>
+                                        <div class="px-4 py-2">{{ profile.privateData.weightGained is same as null ? 'Unable to calculate' : (profile.privateData.weightGained/10)|abs ~ 'kg' }}</div>
+                                    </div>
+                                    <div class="grid grid-cols-2">
+                                        {% if profile.privateData.goalPercentage is same as null or profile.privateData.goalPercentage >= 0 %}
+                                            <div class="px-4 py-2 text-success font-semibold">Goal Achievement Percentage</div>
+                                            <div class="px-4 py-2 text-success">{{ profile.privateData.goalPercentage is same as null ? 'Unable to calculate' : (profile.privateData.goalPercentage/10)|number_format(1) ~ '%' }}</div>
+                                        {% else %}
+                                            <div class="px-4 py-2 text-error font-semibold">Distance from the target</div>
+                                            <div class="px-4 py-2 text-error">{{ profile.privateData.goalPercentage }}%</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="collapse text-grey text-center mt-5">
+                                    <input type="checkbox" class="peer"/>
+                                    <div class="collapse-title text-blue-800 border-info border-2 rounded-lg text-primary-content peer-checked:text-secondary-content">
+                                        Show {{ profile.publicData.username }}'s transformation
+                                    </div>
+                                    <div class="collapse-content font-semibold text-grey peer-checked:text-secondary-content">
+                                        <div class="grid grid-cols-2">
+                                            {% for index, weight in profile.privateData.weights %}
+                                                {% if index is same as (profile.privateData.weights|length - 1) %}
+                                                    <div class="px-4 py-2 text-accent">{{ weight.creationDate|date('d-m-Y') }}</div>
+                                                    <div class="px-4 py-2 text-accent">{{ (weight.weight/10)|number_format(1) }}</div>
+                                                {% elseif profile.privateData.goalWeight is same as null or profile.privateData.goalWeight >= profile.privateData.weights|last.weight %}
+                                                    {% if weight >= profile.privateData.weights[index+1] %}
+                                                        <div class="px-4 py-2 text-success">{{ weight.creationDate|date('d-m-Y') }}</div>
+                                                        <div class="px-4 py-2 text-success">{{ (weight.weight/10)|number_format(1) }}</div>
+                                                    {% else %}
+                                                        <div class="px-4 py-2 text-error">{{ weight.creationDate|date('d-m-Y') }}</div>
+                                                        <div class="px-4 py-2 text-error">{{ (weight.weight/10)|number_format(1) }}</div>
+                                                    {% endif %}
+                                                {% else %}
+                                                    {% if weight <= profile.privateData.weights[index+1] %}
+                                                        <div class="px-4 py-2 text-success">{{ weight.creationDate|date('d-m-Y') }}</div>
+                                                        <div class="px-4 py-2 text-success">{{ (weight.weight/10)|number_format(1) }}</div>
+                                                    {% else %}
+                                                        <div class="px-4 py-2 text-error">{{ weight.creationDate|date('d-m-Y') }}</div>
+                                                        <div class="px-4 py-2 text-error">{{ (weight.weight/10)|number_format(1) }}</div>
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <!-- Do not show personal data -->
+                                <div class="grid w-full my-5 border-2 border-neutral-content shadow-xl rounded">
+                                    <svg class="h-32 place-self-center" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 64 64">
+                                        <path fill="#6563ff" d="M46.3 28.7h-3v-6.4C43.3 16.1 38.2 11 32 11c-6.2 0-11.3 5.1-11.3 11.3v6.4h-3v-6.4C17.7 14.4 24.1 8 32 8s14.3 6.4 14.3 14.3v6.4" class="fill-134563"></path>
+                                        <path fill="#6563ff" d="M44.8 55.9H19.2c-2.6 0-4.8-2.2-4.8-4.8V31.9c0-2.6 2.2-4.8 4.8-4.8h25.6c2.6 0 4.8 2.2 4.8 4.8v19.2c0 2.7-2.2 4.8-4.8 4.8zM19.2 30.3c-.9 0-1.6.7-1.6 1.6v19.2c0 .9.7 1.6 1.6 1.6h25.6c.9 0 1.6-.7 1.6-1.6V31.9c0-.9-.7-1.6-1.6-1.6H19.2z" class="fill-134563"></path>
+                                        <path fill="#6563ff" d="M35.2 36.7c0 1.8-1.4 3.2-3.2 3.2s-3.2-1.4-3.2-3.2 1.4-3.2 3.2-3.2 3.2 1.5 3.2 3.2" class="fill-134563"></path>
+                                        <path fill="#6563ff" d="M32.8 36.7h-1.6l-1.6 9.6h4.8l-1.6-9.6" class="fill-134563"></path>
+                                    </svg>
+                                    <p class="text-xl text-grey-900 place-self-center pb-1">{{ profile.publicData.username }} preferred to hide personal info</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <!-- End of about section -->
+
+                    <div class="my-4"></div>
+
+                    <!-- Trainings and programmes -->
+                    <div class="bg-blue-100 border-2 border-info p-3 shadow-sm rounded-sm">
+                        <div class="grid grid-cols-2">
+                            <div>
+                                <div class="flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3">
+                                <span class="text-green-500">
+                                    <svg class="h-9" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path fill="#6563ff"
+                                              d="m17.48 6.55-2.84-2.84a1 1 0 0 0-1.42 0 1 1 0 0 0 0 1.41l2.12 2.12-8.1 8.1-2.12-2.12a1 1 0 0 0-1.41 0 1 1 0 0 0 0 1.42l2.81 2.81 2.81 2.81a1 1 0 0 0 .71.3 1 1 0 0 0 .71-1.71l-2.09-2.09 8.1-8.1 2.12 2.12a1 1 0 1 0 1.41-1.42ZM3.71 17.46a1 1 0 0 0-1.42 1.42l2.83 2.83a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29 1 1 0 0 0 0-1.42Zm18-12.34-2.83-2.83a1 1 0 0 0-1.42 1.42l2.83 2.83a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42Z"></path>
+                                    </svg>
+                                </span>
+                                    <span class="tracking-wide">Recent Trainings</span>
+                                </div>
+                                <ul class="list-inside space-y-2">
+                                    <li>
+                                        <div class="text-teal-600">Bench press</div>
+                                        <div class="text-gray-500 text-xs">Month ago</div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <div class="flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3">
+                                <span class="text-green-500">
+                                    <svg class="h-9" fill="#6563ff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                        <path d="M246 88.6c-10.4 3.8-18.6 12.6-21.1 22.7-2.7 11.1 1.3 24.2 9.8 31.6 15.8 14 40.8 9.1 50-9.7 2.4-4.9 2.8-6.9 2.8-14.2 0-7-.4-9.4-2.4-13.5-3.2-6.4-9.3-12.4-15.5-15.4-6.6-3-17.4-3.7-23.6-1.5zM222 160.3c-18.8 5.2-31.2 27.8-35.5 64.7-.9 7.3-1.5 21.5-1.5 34.2V281h-7.2c-4 0-16.7.7-28.3 1.5-11.5.8-21 1.3-21.1 1.2-.1-.1-1-10.1-2-22.2-1.7-20.4-2-22.2-4.1-24.3-2.1-2.1-2.9-2.3-8.1-1.7-4 .5-6.3 1.3-7.7 2.8-2 2.2-2 2.2-3.9.3-1.6-1.6-2.7-1.7-8-1.2-3.9.5-6.8 1.4-8 2.6-1.7 1.7-2.1 1.7-4.1.4-3-2-13.1-.8-15.7 1.8-1.5 1.5-2.2 1.7-3.4.7-.9-.7-3.8-1-8-.7-5.4.3-7 .8-8.5 2.7-1.7 2.1-2 2.2-3.5.6-3.1-3-17.4 0-17.4 3.7 0 .6-.9.3-2-.7-1.6-1.5-3-1.7-7.6-1.1-6.8.8-9.2 2-9.9 4.9-.3 1.2 1 11.6 2.9 23.2 1.8 11.5 3.2 21.1 3.1 21.3-.1.1-3 .7-6.4 1.3-5.7 1-6.2 1.3-5.7 3.3.3 1.1.6 2.9.6 4 0 1.7.6 1.8 6.5 1.1 7.6-.8 6.3-3.8 10.6 24 3.5 23.1 4.3 26.2 7 27 3.9 1.3 11.8-.5 13.8-3.1 1.7-2.1 2-2.2 3.2-.8 2.1 2.6 12.6 1.5 15.1-1.6 1.7-2.2 1.9-2.2 3.7-.6 2.9 2.7 12.4 1.3 15.1-2.2 1.1-1.3 2-2 2-1.5 0 3.3 14.1 3.3 16.5 0 1.1-1.5 1.6-1.5 3.8-.4 3.8 2 12.5.7 14.9-2.3 1-1.2 1.8-1.7 1.8-1.1 0 2.1 3.9 3.1 9.5 2.5 8.9-1.1 8.8-.7 6.5-28.5-1.1-12.9-2-23.9-2-24.5 0-1.1 1.7-1.3 39.1-3.5l17.6-1 3 3c5.5 5.5 11.5 5.3 17-.5l3.3-3.5h94l3.3 3.5c5.5 5.8 11.5 6 17 .5l3-3 17.6 1c37.4 2.2 39.1 2.4 39.1 3.5 0 .6-.9 11.6-2 24.5-2.3 27.8-2.4 27.4 6.5 28.5 5.6.6 9.5-.4 9.5-2.5 0-.6.8-.1 1.8 1.1 2.4 3 11.1 4.3 14.9 2.3 2.2-1.1 2.7-1.1 3.8.4 2.4 3.3 16.5 3.3 16.5 0 0-.5.9.2 2 1.5 2.7 3.5 12.2 4.9 15.1 2.2 1.8-1.6 2-1.6 3.7.6 2.5 3.1 13 4.2 15.1 1.6 1.2-1.4 1.5-1.3 3.2.8 2 2.6 9.9 4.4 13.8 3.1 2.7-.8 3.5-3.9 7-27 4.3-27.8 3-24.8 10.6-24 5.9.7 6.5.6 6.5-1.1 0-1.1.3-2.9.6-4 .5-2 0-2.3-5.7-3.3-3.4-.6-6.3-1.2-6.4-1.3-.1-.2 1.3-9.8 3.1-21.3 1.9-11.6 3.2-22 2.9-23.2-.7-2.9-3.1-4.1-9.9-4.9-4.6-.6-6-.4-7.6 1.1-1.1 1-2 1.3-2 .7 0-2-4.3-4-10.1-4.7-4.5-.6-5.9-.4-7.3 1-1.5 1.6-1.7 1.5-3.4-.5-2.3-2.8-12.1-4.3-15.8-2.4-2.1 1.1-2.7 1.1-4.3-.5-2.5-2.5-12.6-3.6-15.6-1.7-2 1.3-2.4 1.3-4.1-.4-1.2-1.2-4.1-2.1-8-2.6-5.3-.5-6.4-.4-8 1.2-1.9 1.9-1.9 1.9-3.9-.3-1.4-1.5-3.7-2.3-7.7-2.8-5.2-.6-6-.4-8.1 1.7-2.1 2.1-2.4 3.9-4 23.3-.9 11.6-1.7 21.6-1.7 22.3 0 1-1.5 1.2-6.7.7-3.8-.4-16.5-1.2-28.3-1.8l-21.5-1.2-.6-26.5c-.4-14.6-1.2-30.1-1.9-34.4-4.5-30.1-14.9-50-29.9-57.3l-5.6-2.8-31.5-.2c-22.8-.2-32.8.1-36 1zm-5.2 79.9c-.1 20.7-.6 37.9-.9 38.3-.4.3-2.3.9-4.4 1.2l-3.7.6.5-27.4c.6-28.7 1.5-37 5.9-50.4 2.1-6.6 2.3-6.8 2.6-3.5.2 1.9.2 20.5 0 41.2zm82.2-34.1c3.5 12.6 5 28.3 5 52.1v22l-3.7-.7c-2.1-.4-4-.9-4.3-1.2-.3-.2-.6-19-.8-41.6-.2-27 .1-40.7.7-39.6.6.8 1.9 4.9 3.1 9z"></path>
+                                        <path d="M214.5 296.2c-.2.7-2.5 26.6-5 57.5-4.3 52.7-4.5 56.4-3 59.9 2.1 5.1 4.2 7.3 9 9.5 8.3 3.8 17.6 1 22.1-6.6 2.4-4.2 2.7-6.2 6.9-58.7 2.4-29.9 4.6-56.2 4.8-58.6l.5-4.2h-17.5c-13 0-17.5.3-17.8 1.2zM262.7 299.2c.2 2.4 2.4 28.7 4.8 58.6 4.2 52.5 4.5 54.5 6.9 58.7 7.6 12.9 27.6 10.2 31.6-4.4.7-2.7-.1-17.3-3.5-59.1-2.5-30.5-4.8-56.1-5-56.8-.3-.9-4.8-1.2-17.8-1.2h-17.5l.5 4.2z"></path>
+                                    </svg>
+                                </span>
+                                    <span class="tracking-wide">Recent Programmes</span>
+                                </div>
+                                <ul class="list-inside space-y-2">
+                                    <li>
+                                        <div class="text-teal-600">Full body workout</div>
+                                        <div class="text-gray-500 text-xs">Today</div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- End of Trainings and programmes -->
+                    </div>
+                    <!-- End of profile tab -->
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,144 @@
+{% extends '@app.shared_dir/base.html.twig' %}
+
+{% block content %}
+    <div class="grid m-3 overflow-hidden">
+        <div class="w-full p-6 m-auto bg-transparent/10 rounded-md shadow-md border-2 border-info lg:max-w-md">
+            {{ form_start(form, {'method': 'POST', 'attr': {'class': 'space-y-4 grid'}}) }}
+            {% if form_errors(form) != null %}
+                <div class="grid mt-1">
+                    {% for error in form.vars.errors %}
+                        <span class="bg-yellow-100 place-self-center text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">{{ error.message }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <div>
+                {{ form_label(form.title) }}
+                <div class="indicator w-[97%]">
+                    {{ form_widget(form.title, {'attr': {
+                        'class': 'form-control input-sm border-info rounded-sm border w-full',
+                        'placeholder': 'Bench press',
+                        'autocomplete': 'title',
+                        'required': true
+                    }}) }}
+                </div>
+                {% if form_errors(form.title) != null %}
+                    <div class="grid mt-1">
+                        {% for error in form.title.vars.errors %}
+                            <span class="bg-yellow-100 place-self-center text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">{{ error.message }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                {{ form_label(form.description) }}
+                <div class="indicator w-[97%]">
+                    {{ form_widget(form.description, {'attr': {
+                        'class': 'textarea textarea-primary w-full',
+                        'rows': '2',
+                        'placeholder': 'Add something about the exercise'
+                    }}) }}
+                </div>
+                {% if form_errors(form.description) != null %}
+                    <div class="grid mt-1">
+                        {% for error in form.description.vars.errors %}
+                            <span class="bg-yellow-100 place-self-center text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">{{ error.message }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                {{ form_label(form.executionTechnique) }}
+                <div class="date w-[97%]">
+                    {{ form_widget(form.executionTechnique, {'attr': {
+                        'class': 'textarea textarea-primary w-full',
+                        'rows': '2',
+                        'placeholder': 'Add something about how to do the exercise',
+                    }}) }}
+                </div>
+                {% if form_errors(form.executionTechnique) != null %}
+                    <div class="grid mt-1">
+                        {% for error in form.executionTechnique.vars.errors %}
+                            <span class="bg-yellow-100 place-self-center text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">{{ error.message }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                {{ form_label(form.executionTips) }}
+                <div class="indicator w-[97%]">
+                    {{ form_widget(form.executionTips, {'attr': {
+                        'class': 'textarea textarea-primary w-full',
+                        'rows': '2',
+                        'placeholder': 'Add something about what to watch out for when doing the exercise',
+                    }}) }}
+                </div>
+                {% if form_errors(form.executionTips) != null %}
+                    <div class="grid mt-1">
+                        {% for error in form.executionTips.vars.errors %}
+                            <span class="bg-yellow-100 place-self-center text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">{{ error.message }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                {{ form_label(form.difficulty) }}
+                <div class="indicator w-[97%]">
+                    {{ form_widget(form.difficulty, {'attr': {
+                        'class': 'form-control input-sm border-info rounded-sm border w-full',
+                        'placeholder': 'Difficulty from 1 to 5'
+                    }}) }}
+                </div>
+                {% if form_errors(form.difficulty) != null %}
+                    <div class="grid mt-1">
+                        {% for error in form.difficulty.vars.errors %}
+                            <span class="bg-yellow-100 place-self-center text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">{{ error.message }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                {{ form_label(form.targetMuscles) }}
+                <div id="targetMuscles">
+                    {% for targetMuscle in form.targetMuscles.children %}
+                        <label for="{{ targetMuscle.vars.id }}">{{ targetMuscle.vars.label }}</label>
+                        {{ form_widget(targetMuscle, {
+                            'attr': {
+                                'class': 'checkbox'
+                            }
+                        }) }}
+                        <br>
+                    {% endfor %}
+                </div>
+                {% if form_errors(form.targetMuscles) != null %}
+                    <div class="grid mt-1">
+                        {% for error in form.targetMuscles.vars.errors %}
+                            <span class="bg-yellow-100 place-self-center text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">{{ error.message }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                <div>
+                    {{ form_label(form.image) }}
+                    <div class="indicator w-[97%]">
+                        {{ form_widget(form.image, {'attr': {
+                            'class': 'form-control file-input file-input-bordered file-input-primary w-full',
+                            'accept': 'image/jpeg,image/png,image/gif'
+                        }}) }}
+                    </div>
+                    {% if form_errors(form.image) != null %}
+                        <div class="grid mt-1">
+                            {% for error in form.image.vars.errors %}
+                                <span class="bg-yellow-100 place-self-center text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">{{ error.message }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="place-self-center text-center mt-2">
+                    <button class="btn btn-accent rounded-sm" id="save_exercise" type="submit">Save</button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

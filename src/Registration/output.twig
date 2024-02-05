@@ -1,0 +1,98 @@
+{% extends '@app.shared_dir/base.html.twig' %}
+
+{% block content %}
+    <div class="grid m-3 overflow-hidden">
+        <div class="w-full p-6 m-auto bg-transparent/10 rounded-md shadow-md border-2 border-info lg:max-w-md">
+            <p class="text-3xl font-semibold text-center text-accent">Please Sign up!</p>
+            {{ form_start(form, {'method': 'POST', 'attr': {'class': 'space-y-4 grid'}}) }}
+            {% if form_errors(form) != null %}
+                <div class="grid mt-1">
+                    {% for error in form.vars.errors %}
+                        <span class="bg-red-100 place-self-center text-red-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-300 border border-red-300">{{ error.message }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <div>
+                {{ form_label(form.email) }}
+                <div class="indicator w-[97%]">
+                    <span class="indicator-item badge badge-sm font-bold bg-indigo-800">Required</span>
+                    {{ form_widget(form.email, {'attr': {
+                        'class': 'form-control input-sm border-info rounded-sm border w-full',
+                        'placeholder': 'gym-assistant@gmail.com',
+                        'autocomplete': 'email',
+                        'required': true,
+                    }}) }}
+                </div>
+                {% if form_errors(form.email) != null %}
+                    <div class="grid mt-1">
+                        {% for error in form.email.vars.errors %}
+                            <span class="bg-yellow-100 place-self-center text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">{{ error.message }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                {{ form_label(form.username) }}
+                <div class="indicator w-[97%]">
+                    <span class="indicator-item badge badge-sm font-bold bg-indigo-800">Required</span>
+                    {{ form_widget(form.username, {'attr': {
+                        'class': 'form-control input-sm border-info rounded-sm border w-full',
+                        'placeholder': 'YourName',
+                        'autocomplete': 'username',
+                        'required': true,
+                    }}) }}
+                </div>
+                {% if form_errors(form.username) != null %}
+                    <div class="grid mt-1">
+                        {% for error in form.username.vars.errors %}
+                            <span class="bg-yellow-100 place-self-center text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">{{ error.message }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                {{ form_label(form.plainPassword.first) }}
+                <div class="indicator w-[97%]">
+                    <span class="indicator-item badge badge-sm font-bold bg-indigo-800">Required</span>
+                    {{ form_widget(form.plainPassword.first, {'attr': {
+                        'class': 'form-control input-sm border-info rounded-sm border w-full',
+                        'required': true,
+                        'autocomplete': 'current-password'
+                    }}) }}
+                </div>
+                {% if form_errors(form.plainPassword.first) != null %}
+                    <div class="grid mt-1">
+                        {% for error in form.plainPassword.first.vars.errors %}
+                            <span class="bg-yellow-100 place-self-center text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">{{ error.message }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                {{ form_label(form.plainPassword.second) }}
+                <div class="indicator w-[97%]">
+                    <span class="indicator-item badge badge-sm font-bold bg-indigo-800">Required</span>
+                    {{ form_widget(form.plainPassword.second, {'attr': {
+                        'class': 'form-control input-sm border-info rounded-sm border w-full',
+                        'required': true,
+                        'autocomplete': 'current-password'
+                    }}) }}
+                </div>
+                {% if form_errors(form.plainPassword.second) != null %}
+                    <div class="grid mt-1">
+                        {% for error in form.plainPassword.second.vars.errors %}
+                            <span class="bg-yellow-100 place-self-center text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">{{ error.message }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="place-self-center">
+                <button class="btn btn-accent rounded-sm" type="submit">Sign up</button>
+            </div>
+            <span class="place-self-center">Already have an account ?
+                    <a href="{{ path('signin') }}"
+                       class="text-blue-600 hover:text-blue-800 hover:underline">Login</a></span>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,23 @@
+home_controller:
+    resource: ../src/Home/HomeController.php
+    type: attribute
+
+registration_controller:
+    resource: ../src/Registration/RegistrationController.php
+    type: attribute
+
+authorization_controller:
+    resource: ../src/Authorization/AuthorizationController.php
+    type: attribute
+
+user_profile_controller:
+    resource: ../src/UserProfile/ProfileController.php
+    type: attribute
+
+exercise_controller:
+    resource: ../src/Exercise/ExerciseController.php
+    type: attribute
+
+program_controller:
+    resource: ../src/Program/ProgramController.php
+    type: attribute

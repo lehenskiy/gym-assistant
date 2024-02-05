@@ -1,0 +1,141 @@
+{% extends '@app.shared_dir/base.html.twig' %}
+
+{% block content %}
+    <div class="grid grid-cols-3 m-3 overflow-hidden">
+        <!--- Search form --->
+        <div class="w-full h-[53rem] justify-self-start p-6 bg-transparent/10 rounded-md shadow-md border-2 border-info lg:w-80">
+            {{ form_start(form, {'method': 'POST', 'attr': {'class': 'space-y-4 grid'}}) }}
+            {% if form_errors(form) != null %}
+                <div class="grid mt-1">
+                    {% for error in form.vars.errors %}
+                        <span class="bg-yellow-100 place-self-center text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">{{ error.message }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <div>
+                {{ form_label(form.titleToSearch, 'Title of exercise') }}
+                <div class="indicator w-[97%]">
+                    {{ form_widget(form.titleToSearch, {'attr': {
+                        'class': 'form-control input-sm border-info rounded-sm border w-full',
+                        'placeholder': 'Bench press',
+                        'autocomplete': 'title',
+                    }}) }}
+                </div>
+                {% if form_errors(form.titleToSearch) != null %}
+                    <div class="grid mt-1">
+                        {% for error in form.titleToSearch.vars.errors %}
+                            <span class="bg-yellow-100 place-self-center text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">{{ error.message }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                {{ form_label(form.authorToSearch, 'Author of exercise') }}
+                <div class="indicator w-[97%]">
+                    {{ form_widget(form.authorToSearch, {'attr': {
+                        'class': 'form-control input-sm border-info rounded-sm border w-full',
+                        'placeholder': 'Gym Assistant',
+                        'autocomplete': 'author',
+                    }}) }}
+                </div>
+                {% if form_errors(form.authorToSearch) != null %}
+                    <div class="grid mt-1">
+                        {% for error in form.authorToSearch.vars.errors %}
+                            <span class="bg-yellow-100 place-self-center text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">{{ error.message }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                {{ form_label(form.targetMusclesForFilter, 'Filter by muscles') }}
+                <div id="targetMusclesFilter">
+                    {% for targetMuscle in form.targetMusclesForFilter.children %}
+                        <label for="{{ targetMuscle.vars.id }}">{{ targetMuscle.vars.label }}</label>
+                        {{ form_widget(targetMuscle, {
+                            'attr': {
+                                'class': 'checkbox'
+                            }
+                        }) }}
+                        <br>
+                    {% endfor %}
+                </div>
+                {% if form_errors(form.targetMusclesForFilter) != null %}
+                    <div class="grid mt-1">
+                        {% for error in form.targetMusclesForFilter.vars.errors %}
+                            <span class="bg-yellow-100 place-self-center text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">{{ error.message }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                {{ form_label(form.difficultiesForFilter) }}
+                {{ form_widget(form.difficultiesForFilter, {
+                    'attr': {
+                        'class': 'ml-6 space-x-2'
+                    }
+                }) }}
+                {% if form_errors(form.difficultiesForFilter) != null %}
+                    <div class="grid mt-1">
+                        {% for error in form.difficultiesForFilter.vars.errors %}
+                            <span class="bg-yellow-100 place-self-center text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">{{ error.message }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                {{ form_label(form.containsImage, 'Contains an image?') }}
+                {{ form_widget(form.containsImage, {
+                    'attr': {
+                        'class': 'ml-6 select select-primary'
+                    }
+                }) }}
+                {% if form_errors(form.containsImage) != null %}
+                    <div class="grid mt-1">
+                        {% for error in form.containsImage.vars.errors %}
+                            <span class="bg-yellow-100 place-self-center text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">{{ error.message }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="place-self-center text-center mt-2">
+                <button class="btn btn-accent rounded-sm" type="submit">Search</button>
+            </div>
+            {{ form_end(form) }}
+        </div>
+        <!--- Search results --->
+        {% if searchResults is not null %}
+            <div class="self-start justify-self-center">
+                <p class="text-3xl text-center text-indigo-500">{{ searchResults|length }} exercises found</p>
+                <div class="overflow-x-auto self-start justify-self-center top-0 p-6 bg-transparent/10 rounded-md shadow-md border-2 lg:max">
+                    <table class="table table-lg">
+                        <!-- head -->
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Difficulty</th>
+                            <td>Contains an image</td>
+                            <td>Views</td>
+                            <td>Target muscles</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for searchedDTO in searchResults %}
+                            <tr class="hover">
+                                <th>{{ loop.index }}</th>
+                                <th><a class="link" href="{{ path('show_exercise', {'slug': searchedDTO.slug}) }}">{{ searchedDTO.title }}</a></th>
+                                <th><a class="link" href="{{ path('show_profile', {'slug': searchedDTO.authorSlug}) }}">{{ searchedDTO.authorUsername }}</a></th>
+                                <th>{{ searchedDTO.difficulty }}</th>
+                                <th>{{ searchedDTO.containsImage ? 'Yes' : 'No' }}</th>
+                                <th>{{ searchedDTO.viewsNumber }}</th>
+                                <th>{% for targetMuscle in searchedDTO.targetMuscles %} {{ targetMuscle }}<br> {% endfor %}</th>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

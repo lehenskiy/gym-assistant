@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Gym Assistant{% endblock %}</title>
+    {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+
+    <link rel="icon" type="image/png" href="{{ asset('/img/icons/64x64.png') }}"/>
+    {# daisyUI styles #}
+    <link rel="stylesheet" href="{{ asset('https://cdn.jsdelivr.net/npm/daisyui@4.4.19/dist/full.min.css') }}"/>
+    {# tailwind script loaded by cdn for daisyUI #}
+    <script src="{{ asset('https://cdn.tailwindcss.com') }}"></script>
+    {# theme-change script loaded by cdn #}
+    <script src="{{ asset('https://cdn.jsdelivr.net/npm/theme-change@2.0.2/index.js') }}"></script>
+</head>
+<body>
+<div class="navbar bg-base-100 shadow-md">
+    <div class="flex-1">
+        <a class="btn btn-ghost normal-case text-xl pr-0" href="{{ path('show_home') }}">Gym Assistant</a>
+        <label class="swap swap-rotate" data-choose-theme>
+            <!-- this hidden checkbox controls the state -->
+            <input type="checkbox" data-toggle-theme="light,dark" data-act-class="ACTIVECLASS"/>
+            <div class="swap-on fill-current w-10 h-10">&#127771;</div>
+            <div class="swap-off fill-current w-10 h-10">&#127774;</div>
+        </label>
+    </div>
+    <div class="flex-none">
+        <ul class="menu menu-horizontal px-1">
+            {% if app.current_route in ['signin', 'signup'] %}
+                {# show nothing #}
+            {% elseif app.current_route in ['show_profile', 'edit_profile'] %}
+                {% block right_navbar_elements %}{% endblock %}
+            {% elseif currentUserUsername is defined and currentUserUsername is not null %}
+                <div class="dropdown dropdown-end z-50">
+                    <label tabindex="0" class="btn btn-sm btn-ghost normal-case">{{ currentUserUsername }}</label>
+                    <ul tabindex="0" class="mt-3 p-2 w-36 shadow menu menu-compact dropdown-content bg-base-100">
+                        <div class=" divide-y divide-indigo-500">
+                            <div>
+                                <li><a href="{{ path('show_profile', {'slug': currentUserSlug}) }}" class="w-32">Profile</a></li>
+                                <li><a href="{{ path('add_exercise') }}" class="w-32">Add exercise</a></li>
+                            </div>
+                            <li><a href="{{ path('logout') }}" class="w-32">Logout</a></li>
+                        </div>
+                    </ul>
+                </div>
+                {# show profile menu #}
+            {% else %}
+                <li><a href="{{ path('signup') }}">Sign up</a></li>
+                <p class="divider underline decoration-2 decoration-indigo-500 divider-horizontal">or</p>
+                <li><a href="{{ path('signin') }}">Sign in</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+{% block content %}{% endblock %}
+</body>
+</html>

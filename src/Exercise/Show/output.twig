@@ -1,0 +1,60 @@
+{% extends '@app.shared_dir/base.html.twig' %}
+
+{% block content %}
+    <div class="hero bg-base-300 w-full">
+        <div class="hero-content flex-col lg:flex-row">
+
+            {% if exercise.imageFilename is not same as null %}
+                <img alt="exercise image" src="{{ asset('img/exercise/' ~ exercise.imageFilename) }}" class="max-w-sm rounded-lg shadow-2xl"/>
+            {% endif %}
+
+            <div class="max-w-md">
+                <h1 class="text-5xl font-bold">{{ exercise.title }}</h1>
+                <h2 class="text-3xl pt-1">Description</h2>
+                <div class="pt-1">{{ exercise.description is same as null ? 'No description provided' : exercise.description|nl2br }}</div>
+                <h2 class="text-3xl pt-1">Technique of exercise</h2>
+                <p class="pt-1">{{ exercise.executionTechnique is same as null ? 'No technique provided' : exercise.executionTechnique|nl2br }}</p>
+                <h2 class="text-3xl pt-1">Tips</h2>
+                <p class="pt-1">{{ exercise.executionTips is same as null ?  'No execution tips provided' : exercise.executionTips|nl2br }}</p>
+                <div class="grid grid-cols-2">
+                    <div class="px-4 py-2 font-semibold">Author</div>
+                    <a class="px-4 py-2 link text-indigo-500 italic" href="{{ path('show_profile', {'slug': exercise.authorSlug}) }}">{{ exercise.authorUsername }}</a>
+                </div>
+                <div class="grid grid-cols-2">
+                    <div class="px-4 py-2 font-semibold">Added to site</div>
+                    <div class="px-4 py-2">{{ exercise.additionDate|date('d.m.y') }}</div>
+                </div>
+                <div class="grid grid-cols-2">
+                    <div class="px-4 py-2 font-semibold">Views</div>
+                    <div class="px-4 py-2">{{ exercise.viewsNumber }}</div>
+                </div>
+                <div class="grid grid-cols-2">
+                    <div class="px-4 py-2 font-semibold">Difficulty</div>
+                    <div class="px-4 py-2
+                        {% if exercise.difficulty is same as null %}
+                            text-grey-500
+                        {% elseif exercise.difficulty < 3 %}
+                            text-green-500
+                        {% elseif exercise.difficulty is same as 3 %}
+                            text-orange-500
+                        {% else %}
+                            text-red-500
+                        {% endif %}
+                    ">
+                        {{ exercise.difficulty ?? 'Not provided' }}
+                    </div>
+                </div>
+                <ul class="menu bg-base-200 w-256 rounded-box">
+                    <li class="menu-title"><h2 class="text-base">Target muscles</h2></li>
+                    {% if exercise.targetMuscles is same as null %}
+                        <li>'No target muscles provided'</li>
+                    {% else %}
+                        {% for targetMuscle in exercise.targetMuscles %}
+                            <li><a>{{ targetMuscle }}</a></li>
+                        {% endfor %}
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends '@app.shared_dir/base.html.twig' %}
+
+{% block content %}
+    <div class="hero bg-base-300 w-full">
+        <div class="hero-content flex-col lg:flex-row">
+
+            {% if program.imageFilename is not same as null %}
+                <img src="{{ asset('img/program/' ~ program.imageFilename) }}" class="max-w-sm rounded-lg shadow-2xl"/>
+            {% endif %}
+
+            <div class="max-w-md">
+                <h1 class="text-5xl font-bold">{{ program.title }}</h1>
+                <h2 class="text-3xl pt-1">Description</h2>
+                <div class="pt-1">{{ program.description is same as null ? 'No description provided' : program.description|nl2br }}</div>
+                <div class="grid grid-cols-2">
+                    <div class="px-4 py-2 font-semibold">Author</div>
+                    <a class="px-4 py-2 link text-indigo-500 italic" href="{{ path('show_profile', {'slug': program.authorSlug}) }}">{{ program.authorUsername }}</a>
+                </div>
+                <div class="grid grid-cols-2">
+                    <div class="px-4 py-2 font-semibold">Added to site</div>
+                    <div class="px-4 py-2">{{ program.additionDate|date('d.m.y') }}</div>
+                </div>
+                <div class="grid grid-cols-2">
+                    <div class="px-4 py-2 font-semibold">Exercises</div>
+                    <ul class="menu bg-base-200 my-5 w-256 rounded-box">
+                        {% for exercise in program.exercises %}
+                            <li><a href="{{ path('show_exercise', {'slug': exercise.slug}) }}"><span class="badge badge-sm">{{ exercise.position }}</span>{{ exercise.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                    <div class="px-4 py-2 my-5 font-semibold">Target muscles</div>
+                    <ul class="menu bg-base-200 my-5 w-256 rounded-box">
+                        {% if program.targetMuscles is same as null %}
+                            <li>'No target muscles provided'</li>
+                        {% else %}
+                            {% for targetMuscle in program.targetMuscles %}
+                                <li><a>{{ targetMuscle }}</a></li>
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

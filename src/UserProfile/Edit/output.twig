@@ -1,0 +1,169 @@
+{% extends '@app.shared_dir/base.html.twig' %}
+
+{% block right_navbar_elements %}
+    <a href="{{ path('show_profile', {'slug': currentUserSlug}) }}" class="btn btn-info btn-sm">Back</a>
+{% endblock %}
+
+{% block content %}
+    <div class="grid m-3 overflow-hidden">
+        <div class="w-full p-6 m-auto bg-transparent/10 rounded-md shadow-md border-2 border-info lg:max-w-md">
+            {{ form_start(form, {'method': 'POST', 'attr': {'class': 'space-y-4 grid'}}) }}
+            {% if form_errors(form) != null %}
+                <div class="grid mt-1">
+                    {% for error in form.vars.errors %}
+                        <span class="bg-yellow-100 place-self-center text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">{{ error.message }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <p class="text-3xl font-semibold text-center text-accent">Edit your profile!</p>
+            <p class="text-xl font-semibold text-grey-900 mt-3">Personal data</p>
+            <hr class="h-[1px] border-t-0 bg-neutral-100 mb-3 opacity-100 dark:opacity-50"/>
+            <div>
+                {{ form_label(form.gender) }}
+                <div class="indicator w-[97%]">
+                    {{ form_widget(form.gender, {'attr': {
+                        'class': 'form-control text-center input-sm border-info rounded-sm border w-full'
+                    }}) }}
+                </div>
+                {% if form_errors(form.gender) != null %}
+                    <div class="grid mt-1">
+                        {% for error in form.gender.vars.errors %}
+                            <span class="bg-yellow-100 place-self-center text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">{{ error.message }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                {{ form_label(form.birthDate) }}
+                <div class="date w-[97%]">
+                    {{ form_widget(form.birthDate, {'attr': {
+                        'class': ' input-sm border-info rounded-sm border w-full'
+                    }}) }}
+                </div>
+                {% if form_errors(form.birthDate) != null %}
+                    <div class="grid mt-1">
+                        {% for error in form.birthDate.vars.errors %}
+                            <span class="bg-yellow-100 place-self-center text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">{{ error.message }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                {{ form_label(form.height) }}
+                <div class="indicator w-[97%]">
+                    {{ form_widget(form.height, {'attr': {
+                        'class': 'form-control input-sm border-info rounded-sm border w-full',
+                        'placeholder': 'cm',
+                    }}) }}
+                </div>
+                {% if form_errors(form.height) != null %}
+                    <div class="grid mt-1">
+                        {% for error in form.height.vars.errors %}
+                            <span class="bg-yellow-100 place-self-center text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">{{ error.message }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                {{ form_label(form.currentWeight) }}
+                <div class="indicator w-[97%]">
+                    {{ form_widget(form.currentWeight, {'attr': {
+                        'class': 'form-control input-sm border-info rounded-sm border w-full',
+                        'placeholder': 'kg',
+                        'value': null,
+                    }}) }}
+                </div>
+                {% if form_errors(form.currentWeight) != null %}
+                    <div class="grid mt-1">
+                        {% for error in form.currentWeight.vars.errors %}
+                            <span class="bg-yellow-100 place-self-center text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">{{ error.message }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                {{ form_label(form.goalWeight) }}
+                <div class="indicator w-[97%]">
+                    {{ form_widget(form.goalWeight, {'attr': {
+                        'class': 'form-control input-sm border-info rounded-sm border w-full',
+                        'placeholder': 'kg',
+                    }}) }}
+                </div>
+                {% if form_errors(form.goalWeight) != null %}
+                    <div class="grid mt-1">
+                        {% for error in form.goalWeight.vars.errors %}
+                            <span class="bg-yellow-100 place-self-center text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">{{ error.message }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                {{ form_label(form.public) }}
+                {{ form_widget(form.public, {'attr': {
+                    'class': 'toggle toggle-info pt-1',
+                }}) }}
+                <p class="text text-sm text-grey pt-1">(if checked, your personal data will be visible to other users)</p>
+                {% if form_errors(form.public) != null %}
+                    <div class="grid mt-1">
+                        {% for error in form.public.vars.errors %}
+                            <span class="bg-yellow-100 place-self-center text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">{{ error.message }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <p class="text-xl font-semibold text-grey-900 mt-3">Login data</p>
+            <hr class="h-[1px] border-t-0 bg-neutral-100 mb-3 opacity-100 dark:opacity-50"/>
+            <div>
+                {{ form_label(form.email) }}
+                <div class="indicator w-[97%]">
+                    {{ form_widget(form.email, {'attr': {
+                        'class': 'form-control input-sm border-info rounded-sm border w-full',
+                        'placeholder': 'gym-assistant@gmail.com',
+                        'autocomplete': 'email',
+                    }}) }}
+                </div>
+                {% if form_errors(form.email) != null %}
+                    <div class="grid mt-1">
+                        {% for error in form.email.vars.errors %}
+                            <span class="bg-yellow-100 place-self-center text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">{{ error.message }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                {{ form_label(form.currentPassword) }}
+                <div class="indicator w-[97%]">
+                    {{ form_widget(form.currentPassword, {'attr': {
+                        'class': 'form-control input-sm border-info rounded-sm border w-full',
+                    }}) }}
+                </div>
+                {% if form_errors(form.currentPassword) != null %}
+                    <div class="grid mt-1">
+                        {% for error in form.currentPassword.vars.errors %}
+                            <span class="bg-yellow-100 place-self-center text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">{{ error.message }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                {{ form_label(form.newPassword) }}
+                <div class="indicator w-[97%]">
+                    {{ form_widget(form.newPassword, {'attr': {
+                        'class': 'form-control input-sm border-info rounded-sm border w-full',
+                    }}) }}
+                </div>
+                {% if form_errors(form.newPassword) != null %}
+                    <div class="grid mt-1">
+                        {% for error in form.newPassword.vars.errors %}
+                            <span class="bg-yellow-100 place-self-center text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">{{ error.message }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="place-self-center">
+                <button class="btn btn-accent rounded-sm" type="submit">Save</button>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

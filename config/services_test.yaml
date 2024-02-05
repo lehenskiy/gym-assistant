@@ -1,0 +1,31 @@
+parameters:
+    test.client.parameters:
+        HTTP_HOST: '%env(HTTP_HOST)%'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Shared/Entity/'
+            - '../src/Kernel.php'
+
+    imageUploader.test:
+        class: App\Shared\Service\ImageUploader
+        arguments:
+            $imagesDirectory: '/tmp'
+
+    App\Exercise\Add\AddExerciseService:
+        public: true
+        arguments:
+            $exerciseImageUploader: '@imageUploader.test'
+
+    App\Exercise\Search\SearchExerciseService:
+        public: true
+
+    App\UserProfile\Edit\EditProfileService:
+        public: true
